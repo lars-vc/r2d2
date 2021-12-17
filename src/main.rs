@@ -92,15 +92,51 @@ fn parse_init(args: Vec<String>) {
 }
 
 fn print_ascii_art() {
+    // println!("{}", "    .-\"\"\"-.");
+    // println!("{}", "   /  [O]  \\");
+    // println!("{}", "  _|____o__|_");
+    // println!("{}", " / | +==== | \\");
+    // println!("{}", " |_|  |□|  |_|");
+    // println!("{}", " | |\" |□|  | |");
+    // println!("{}", " | |L \\V/ C| |");
+    // println!("{}", " | |\\_____/| |");
+    // println!("{}", "/__\\       /__\\");
+    // println!("{}", "");
+
     println!("{}", "    .-\"\"\"-.");
-    println!("{}", "   /  [O]  \\");
+
+    print!("{}", "   /  ");
+    print!("{}", "[".blue());
+    print!("{}", "O".black().bold());
+    print!("{}", "]".blue());
+    println!("  \\");
+
     println!("{}", "  _|____o__|_");
-    println!("{}", " / | +==== | \\");
-    println!("{}", " |_|  |□|  |_|");
-    println!("{}", " | |\" |□|  | |");
-    println!("{}", " | |L \\V/ C| |");
+
+    print!("{}", " / | ");
+    print!("{}", "+====".blue());
+    println!(" | \\");
+
+    print!("{}", " |_|  ");
+    print!("{}", "|".blue());
+    print!("{}", "□");
+    print!("{}", "|".blue());
+    println!("  |_|");
+
+    print!("{}", " | |\" ");
+    print!("{}", "|".blue());
+    print!("{}", "□");
+    print!("{}", "|".blue());
+    println!("  | |");
+
+    print!("{}", " | |");
+    print!("{}", "L ".white().bold());
+    print!("{}", "\\".blue());
+    print!("{}", "V".white().bold());
+    print!("{}", "/".blue());
+    print!("{}", " C".white().bold());
+    println!("| |");
+
     println!("{}", " | |\\_____/| |");
-    println!("{}", "/__\\      /__\\");
-    println!("{}", "");
-    //⬡
+    println!("{}", "/__\\       /__\\");
 }
