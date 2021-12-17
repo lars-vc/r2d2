@@ -61,7 +61,6 @@ fn setup_python(nvim: bool) {
     let ignorespathstr = get_files_path("python_gitignore")
         .expect("Couldn't resolve file path")
         .into_os_string();
-    println!("{:?}", ignorespathstr);
     let gitignore: String =
         fs::read_to_string(ignorespathstr).expect("Couldn't read python_gitignore file");
     fs::write(".gitignore", gitignore).expect("Couldn't create gitignore file");
