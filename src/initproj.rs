@@ -1,4 +1,6 @@
 extern crate colored;
+
+use colored::*;
 use regex::Regex;
 use std::env;
 use std::fs;

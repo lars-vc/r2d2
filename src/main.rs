@@ -1,13 +1,15 @@
 extern crate colored;
 extern crate getopts;
+
 mod initproj;
+
 use colored::*;
 use getopts::Options;
 use std::env;
 
 fn print_help() {
     println!("The assistant R2D2!");
-    println!("ART");
+    println!("insert ascii art");
     println!("Usages:");
     println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
 }
@@ -15,7 +17,7 @@ fn print_help() {
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
-        println!("\033[91mNo arguments giving to R2D2\033[0m");
+        println!("{}", "No arguments given to R2D2".red());
         print_help();
         return;
     }
@@ -39,7 +41,7 @@ fn parse_init(args: Vec<String>) {
         println!("   rust");
     }
     if args.len() == 0 {
-        println!("{}", "No arguments giving to init".red());
+        println!("{}", "No arguments given to init".red());
         init_help();
         return;
     }
