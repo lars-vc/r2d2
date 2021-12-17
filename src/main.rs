@@ -12,6 +12,7 @@ fn print_help() {
     println!("insert ascii art");
     println!("Usages:");
     println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
+    println!("    task      | Not yet implemented");
 }
 
 fn main() {

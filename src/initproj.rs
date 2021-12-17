@@ -49,16 +49,35 @@ fn setup_rust(nvim: bool) {
 }
 
 fn setup_python(nvim: bool) {
+    // Get project name
+    let re = Regex::new(r"^.*/(.*)$").unwrap();
+    let pathname_os = env::current_dir()
+        .expect("Couldn't get current dir")
+        .into_os_string();
+    let pathname = pathname_os.into_string().expect("Error");
+    let projectname = re.replace(&pathname, "${1}").to_string();
+
     // Create a gitignore
     let ignorespathstr = get_files_path("python_gitignore")
         .expect("Couldn't resolve file path")
         .into_os_string();
+    println!("{:?}", ignorespathstr);
     let gitignore: String =
         fs::read_to_string(ignorespathstr).expect("Couldn't read python_gitignore file");
     fs::write(".gitignore", gitignore).expect("Couldn't create gitignore file");
 
     // Create src folder
     fs::create_dir_all("src/").expect("Couldn't create src dir");
+
+    // Create python file
+    let pymainpathstr = get_files_path("python_main")
+        .expect("Couldn't resolve file path")
+        .into_os_string();
+    let pymain: String = fs::read_to_string(pymainpathstr).expect("Couldn't read python_main file");
+    let mut writepymain = String::from("src/");
+    writepymain.push_str(projectname.as_str());
+    writepymain.push_str(".py");
+    fs::write(writepymain, pymain).expect("Couldn't create python file");
 
     // Create a nvim debug file
     if nvim {
