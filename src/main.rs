@@ -51,9 +51,6 @@ fn parse_init(args: Vec<String>) {
         None => std::string::String::from(""),
     };
     let nvim: bool = matches.opt_present("n");
-    println!("{}", giturl);
-    println!("{}", lang);
-    println!("{}", nvim);
     initproj::init_project(lang, nvim, giturl);
     return;
 }
