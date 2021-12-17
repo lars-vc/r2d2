@@ -1,5 +1,7 @@
+extern crate colored;
 extern crate getopts;
 mod initproj;
+use colored::*;
 use getopts::Options;
 use std::env;
 
@@ -7,10 +9,16 @@ fn print_help() {
     println!("The assistant R2D2!");
     println!("ART");
     println!("Usages:");
+    println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+    if args.len() == 1 {
+        println!("\033[91mNo arguments giving to R2D2\033[0m");
+        print_help();
+        return;
+    }
     match args[1].as_str() {
         "init" | "i" => parse_init(args[2..].to_vec()),
         _ => print_help(),
@@ -18,16 +26,37 @@ fn main() {
 }
 
 fn parse_init(args: Vec<String>) {
+    // Error handling
     fn init_help() {
-        println!("Insert help menu with langs and options here");
+        println!("R2D2 init help");
+        println!("How to run:");
+        println!("   r2d2 init LANG --OPTIONS | init a project for given language (LANG) with options (OPTIONS)");
+        println!("\nOptions:");
+        println!("   -n, --neovim      | will create a .vimspector.json file");
+        println!("   -g URL, --git URL | will setup remote and push init files to git");
+        println!("\nSupported languages:");
+        println!("   python, py");
+        println!("   rust");
     }
     if args.len() == 0 {
-        println!("No arguments giving to init");
+        println!("{}", "No arguments giving to init".red());
         init_help();
         return;
     }
     let lang: std::string::String = args[0].clone();
 
+    // Not very clean but Ill keep it for now
+    if lang.chars().nth(0).unwrap() == '-' && lang.chars().nth(1).unwrap() == 'h' {
+        init_help();
+        return;
+    }
+    // doesnt work v
+    // if std::string::String::from(&lang[0..1]) == std::string::String::from("-h") {
+    //     init_help();
+    //     return;
+    // }
+
+    // GETOPTS
     let mut opts = Options::new();
     opts.optopt("g", "git", "git url", "URL");
     opts.optflag("n", "nvim", "init project with nvim editor in mind");
@@ -35,11 +64,13 @@ fn parse_init(args: Vec<String>) {
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
         Err(f) => {
-            println!("{}", f.to_string());
+            println!("{}", f.to_string().red());
+            // println!("{}", "Unrecognized option".red());
             init_help();
             return;
         }
     };
+
     if matches.opt_present("h") {
         init_help();
         return;
@@ -51,6 +82,8 @@ fn parse_init(args: Vec<String>) {
         None => std::string::String::from(""),
     };
     let nvim: bool = matches.opt_present("n");
+
+    // send it off
     initproj::init_project(lang, nvim, giturl);
     return;
 }

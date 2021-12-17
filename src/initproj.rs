@@ -16,7 +16,7 @@ pub fn init_project(lang: String, nvim: bool, giturl: String) {
             setup_rust(nvim);
             setup_git(giturl)
         }
-        _ => println!("Language not supported yet"),
+        _ => println!("Language not supported yet (see r2d2 init -h)"),
     }
 }
 
