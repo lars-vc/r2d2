@@ -9,7 +9,7 @@ use std::env;
 
 fn print_help() {
     println!("The assistant R2D2!");
-    println!("insert ascii art");
+    print_ascii_art();
     println!("Usages:");
     println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
     println!("    task      | Not yet implemented");
@@ -89,4 +89,18 @@ fn parse_init(args: Vec<String>) {
     // send it off
     initproj::init_project(lang, nvim, giturl);
     return;
+}
+
+fn print_ascii_art() {
+    println!("{}", "    .-\"\"\"-.");
+    println!("{}", "   /  [O]  \\");
+    println!("{}", "  _|____o__|_");
+    println!("{}", " / | +==== | \\");
+    println!("{}", " |_|  |□|  |_|");
+    println!("{}", " | |\" |□|  | |");
+    println!("{}", " | |L \\V/ C| |");
+    println!("{}", " | |\\_____/| |");
+    println!("{}", "/__\\       /__\\");
+    println!("{}", "");
+    //⬡
 }
