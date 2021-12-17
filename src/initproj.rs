@@ -1,3 +1,4 @@
+extern crate colored;
 use regex::Regex;
 use std::env;
 use std::fs;
@@ -16,7 +17,7 @@ pub fn init_project(lang: String, nvim: bool, giturl: String) {
             setup_rust(nvim);
             setup_git(giturl)
         }
-        _ => println!("Language not supported yet (see r2d2 init -h)"),
+        _ => println!("{}", "Language not supported yet (see r2d2 init -h)".red()),
     }
 }
 
