@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::env;
 use std::fs;
 use std::io;
@@ -9,9 +10,38 @@ pub fn init_project(lang: String, nvim: bool, giturl: String) {
     match lang.as_str() {
         "python" | "py" => {
             setup_python(nvim);
-            // setup_git(giturl)
+            setup_git(giturl);
+        }
+        "rust" => {
+            setup_rust(nvim);
+            setup_git(giturl)
         }
         _ => println!("Language not supported yet"),
+    }
+}
+
+fn setup_rust(nvim: bool) {
+    Command::new("cargo")
+        .arg("init")
+        .status()
+        .expect("failed to execute process");
+    if nvim {
+        // Get project name, this is some advanced rust I dont really get yet
+        let re = Regex::new(r"^.*/(.*)$").unwrap();
+        let pathname_os = env::current_dir()
+            .expect("Couldn't get current dir")
+            .into_os_string();
+        let pathname = pathname_os.into_string().expect("Error");
+        let projectname = re.replace(&pathname, "${1}");
+
+        // Make vimspector file and insert project name
+        let nvimpathstr = get_files_path("rust_nvimdebug")
+            .expect("Couldn't resolve file path")
+            .into_os_string();
+        let nvimdebug: String = fs::read_to_string(nvimpathstr)
+            .expect("Couldn't read rust_nvimdebug file")
+            .replace("MYAPP", &projectname);
+        fs::write(".vimspector.json", nvimdebug).expect("Couldn't create nvimdebug file");
     }
 }
 
@@ -42,13 +72,39 @@ fn setup_python(nvim: bool) {
     //     .expect("failed to execute process");
 }
 fn setup_git(giturl: String) {
+    print!("Setting up git");
     if giturl == "" {
-        Command::new("git").arg("init");
-        Command::new("git").arg("commit").arg("-m").arg("initing");
-        Command::new("git").arg("branch").arg("-M").arg("root");
-    } else {
+        println!(" from empty url");
         Command::new("git")
             .arg("init")
+            .status()
+            .expect("failed to execute process");
+        Command::new("git")
+            .arg("add")
+            .arg(".")
+            .status()
+            .expect("failed to execute process");
+        Command::new("git")
+            .arg("commit")
+            .arg("-m")
+            .arg("initing")
+            .status()
+            .expect("failed to execute process");
+        Command::new("git")
+            .arg("branch")
+            .arg("-M")
+            .arg("root")
+            .status()
+            .expect("failed to execute process");
+    } else {
+        println!(" from {}", giturl);
+        Command::new("git")
+            .arg("init")
+            .status()
+            .expect("failed to execute process");
+        Command::new("git")
+            .arg("add")
+            .arg(".")
             .status()
             .expect("failed to execute process");
         Command::new("git")
