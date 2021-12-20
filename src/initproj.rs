@@ -50,6 +50,7 @@ fn setup_c(nvim: bool) {
 
     // Setup make file
     // TODO
+    // https://github.com/TheNetAdmin/Makefile-Templates/tree/master/MediumProject
 }
 
 fn setup_cpp(nvim: bool) {
