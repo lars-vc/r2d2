@@ -40,6 +40,8 @@ fn parse_init(args: Vec<String>) {
         println!("\nSupported languages:");
         println!("   python, py");
         println!("   rust");
+        println!("   c");
+        println!("   c++, cpp");
     }
     if args.len() == 0 {
         println!("{}", "No arguments given to init".red());
