@@ -13,6 +13,7 @@ fn print_help() {
     println!("Usages:");
     println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
     println!("    task      | Not yet implemented");
+    println!("    birthday  | Not yet implemented");
 }
 
 fn main() {
@@ -24,6 +25,7 @@ fn main() {
     }
     match args[1].as_str() {
         "init" | "i" => parse_init(args[2..].to_vec()),
+        "birthday" | "bd" => parse_birthday(args[2..].to_vec())
         _ => print_help(),
     }
 }
@@ -91,6 +93,45 @@ fn parse_init(args: Vec<String>) {
     // send it off
     initproj::init_project(lang, nvim, giturl);
     return;
+}
+
+fn parse_birthday(args: Vec<String>){
+    fn init_help() {
+        println!("R2D2 birthday help");
+        println!("How to run:");
+        println!("   r2d2 birthday smtg | ");
+    }
+    if args.len() == 0 {
+        println!("{}", "No arguments given to birthday".red());
+        init_help();
+        return;
+    }
+    let lang: std::string::String = args[0].clone();
+
+    // Not very clean but Ill keep it for now
+    if lang.chars().nth(0).unwrap() == '-' && lang.chars().nth(1).unwrap() == 'h' {
+        init_help();
+        return;
+    }
+
+    // GETOPTS
+    let mut opts = Options::new();
+    opts.optopt("g", "git", "git url", "URL");
+    opts.optflag("n", "nvim", "init project with nvim editor in mind");
+    opts.optflag("h", "help", "print help menu of birthday");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => m,
+        Err(f) => {
+            println!("{}", f.to_string().red());
+            init_help();
+            return;
+        }
+    };
+
+    if matches.opt_present("h") {
+        init_help();
+        return;
+    }
 }
 
 fn print_ascii_art() {

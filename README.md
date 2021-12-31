@@ -13,6 +13,15 @@ Lastly alias R2D2 for easy access (put this in your .bashrc to make this change 
 ```
 alias r2d2='/absolute/path/to/r2d2/target/release/r2d2'
 ```
+## Future ideas
+* tasks
+* birthday
+  * add name date
+  * reamove name
+  * list
+  * days x (see bd of x coming days)
+  * today
+  * tmrw
 ## Why the name R2D2
 Because he is a robot assistent (and my favorite starwars character :p)!
 

@@ -44,6 +44,7 @@ fn setup_c(nvim: bool) {
 
     if nvim {
         create_nvimdebug("c_nvimdebug");
+        // TODO clangd format file
     }
 
     create_gitignore("c_gitignore");
@@ -66,6 +67,7 @@ fn setup_cpp(nvim: bool) {
 
     if nvim {
         create_nvimdebug("cpp_nvimdebug");
+        // TODO clangd format file
     }
 
     create_gitignore("cpp_gitignore");
