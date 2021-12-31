@@ -1,7 +1,9 @@
 extern crate colored;
 extern crate getopts;
 
+mod birthday;
 mod initproj;
+mod utils;
 
 use colored::*;
 use getopts::Options;
@@ -25,7 +27,7 @@ fn main() {
     }
     match args[1].as_str() {
         "init" | "i" => parse_init(args[2..].to_vec()),
-        "birthday" | "bd" => parse_birthday(args[2..].to_vec())
+        "birthday" | "bd" => parse_birthday(args[2..].to_vec()),
         _ => print_help(),
     }
 }
@@ -95,41 +97,47 @@ fn parse_init(args: Vec<String>) {
     return;
 }
 
-fn parse_birthday(args: Vec<String>){
-    fn init_help() {
+fn parse_birthday(args: Vec<String>) {
+    fn birthday_help() {
         println!("R2D2 birthday help");
         println!("How to run:");
         println!("   r2d2 birthday smtg | ");
     }
     if args.len() == 0 {
         println!("{}", "No arguments given to birthday".red());
-        init_help();
+        birthday_help();
         return;
     }
-    let lang: std::string::String = args[0].clone();
+    let request: std::string::String = args[0].clone();
 
     // Not very clean but Ill keep it for now
-    if lang.chars().nth(0).unwrap() == '-' && lang.chars().nth(1).unwrap() == 'h' {
-        init_help();
+    if request.chars().nth(0).unwrap() == '-' && request.chars().nth(1).unwrap() == 'h' {
+        birthday_help();
         return;
+    }
+    match request.as_str() {
+        "add" | "a" => birthday::add_bd(&args[1], &args[2]),
+        "remove" | "rm" => birthday::remove_bd(&args[1]),
+        "list" | "l" => birthday::list_bd(),
+        _ => birthday_help(),
     }
 
     // GETOPTS
     let mut opts = Options::new();
     opts.optopt("g", "git", "git url", "URL");
-    opts.optflag("n", "nvim", "init project with nvim editor in mind");
+    opts.optflag("n", "nvim", "birthday project with nvim editor in mind");
     opts.optflag("h", "help", "print help menu of birthday");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
         Err(f) => {
             println!("{}", f.to_string().red());
-            init_help();
+            birthday_help();
             return;
         }
     };
 
     if matches.opt_present("h") {
-        init_help();
+        birthday_help();
         return;
     }
 }

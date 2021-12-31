@@ -17,9 +17,8 @@ alias r2d2='/absolute/path/to/r2d2/target/release/r2d2'
 * tasks
 * birthday
   * add name date
-  * reamove name
-  * list
-  * days x (see bd of x coming days)
+  * remove name
+  * list -d x
   * today
   * tmrw
 ## Why the name R2D2

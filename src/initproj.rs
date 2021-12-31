@@ -213,7 +213,6 @@ fn get_files_path(endpath: &str) -> io::Result<PathBuf> {
     dir.pop();
     dir.pop();
     dir.pop();
-    dir.push("src");
     dir.push("files");
     dir.push(endpath);
     Ok(dir)
