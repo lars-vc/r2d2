@@ -1,8 +1,1 @@
-{
-    "birthdays": [
-        {
-            "name": "Lars Van Cauter",
-            "date": "17/11/2002"
-        }
-    ]
-}
+{"birthdays":[{"name":"Lars Van Cauter","date":"17/11/2002"}]}

@@ -119,6 +119,7 @@ fn parse_birthday(args: Vec<String>) {
         "add" | "a" => birthday::add_bd(&args[1], &args[2]),
         "remove" | "rm" => birthday::remove_bd(&args[1]),
         "list" | "l" => birthday::list_bd(),
+        "today" => birthday::today_bd(),
         _ => birthday_help(),
     }
 
