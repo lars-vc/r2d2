@@ -13,15 +13,15 @@ fn print_help() {
     println!("The assistant R2D2!");
     print_ascii_art();
     println!("Usages:");
-    println!("    init LANG | init a project for given language (see r2d2 init -h for more info)");
-    println!("    task      | Not yet implemented");
-    println!("    birthday  | Not yet implemented");
+    println!("    init     | init a project for given language (see r2d2 init -h for more info)");
+    println!("    task     | Not yet implemented");
+    println!("    birthday | save the birthdays of people");
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
-        println!("{}", "No arguments given to R2D2".red());
+        println!("{} {}", "error:".bold().red(), "No arguments given to R2D2");
         print_help();
         return;
     }
@@ -48,7 +48,7 @@ fn parse_init(args: Vec<String>) {
         println!("   c++, cpp");
     }
     if args.len() == 0 {
-        println!("{}", "No arguments given to init".red());
+        println!("{} {}", "error:".red().bold(), "No arguments given to init");
         init_help();
         return;
     }
@@ -73,8 +73,7 @@ fn parse_init(args: Vec<String>) {
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
         Err(f) => {
-            println!("{}", f.to_string().red());
-            // println!("{}", "Unrecognized option".red());
+            println!("{} {}", "error:".bold().red(), f.to_string());
             init_help();
             return;
         }
@@ -101,10 +100,21 @@ fn parse_birthday(args: Vec<String>) {
     fn birthday_help() {
         println!("R2D2 birthday help");
         println!("How to run:");
-        println!("   r2d2 birthday smtg | ");
+        println!("   r2d2 birthday COMMAND PARAMETERS");
+        println!("\nCommands:");
+        println!("   add NAME DATE | add a persons birthday to the list");
+        println!("   remove NAME   | remove a person from the list");
+        println!("   list          | list all entries");
+        println!("   query NAME    | query a name");
+        println!("   today         | get all birthdays of today");
+        println!("   tomorrow      | get all birthdays of tomorrow");
     }
     if args.len() == 0 {
-        println!("{}", "No arguments given to birthday".red());
+        println!(
+            "{} {}",
+            "error:".bold().red(),
+            "No arguments given to birthday"
+        );
         birthday_help();
         return;
     }
@@ -116,31 +126,81 @@ fn parse_birthday(args: Vec<String>) {
         return;
     }
     match request.as_str() {
-        "add" | "a" => birthday::add_bd(&args[1], &args[2]),
-        "remove" | "rm" => birthday::remove_bd(&args[1]),
-        "list" | "l" => birthday::list_bd(),
-        "today" => birthday::today_bd(),
-        _ => birthday_help(),
-    }
-
-    // GETOPTS
-    let mut opts = Options::new();
-    opts.optopt("g", "git", "git url", "URL");
-    opts.optflag("n", "nvim", "birthday project with nvim editor in mind");
-    opts.optflag("h", "help", "print help menu of birthday");
-    let matches = match opts.parse(&args[1..]) {
-        Ok(m) => m,
-        Err(f) => {
-            println!("{}", f.to_string().red());
-            birthday_help();
-            return;
+        "add" | "a" => {
+            if args.len() != 3 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::add_bd(&args[1], &args[2])
         }
-    };
+        "remove" | "rm" => {
+            if args.len() != 2 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::remove_bd(&args[1])
+        }
+        "list" | "l" => {
+            if args.len() != 1 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::list_bd()
+        }
+        "query" | "q" => {
+            if args.len() != 2 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::query_bd(&args[1]);
+        }
+        "today" => {
+            if args.len() != 1 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::today_bd()
+        }
+        "tomorrow" | "tmrw" => {
+            if args.len() != 1 {
+                println!(
+                    "{} {}",
+                    "error:".red().bold(),
+                    "Wrong amount of arguments given"
+                );
+                birthday_help();
+                return;
+            }
+            birthday::tmrw_bd()
+        }
 
-    if matches.opt_present("h") {
-        birthday_help();
-        return;
-    }
+        _ => birthday_help(),
+    };
 }
 
 fn print_ascii_art() {

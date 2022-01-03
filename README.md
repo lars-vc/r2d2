@@ -16,11 +16,8 @@ alias r2d2='/absolute/path/to/r2d2/target/release/r2d2'
 ## Future ideas
 * tasks
 * birthday
-  * add name date
-  * remove name
-  * list -d x
-  * today
-  * tmrw
+  * query name
+  * list => sorted on date
 ## Why the name R2D2
 Because he is a robot assistent (and my favorite starwars character :p)!
 

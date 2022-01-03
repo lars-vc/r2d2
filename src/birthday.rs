@@ -4,7 +4,6 @@ extern crate colored;
 use chrono::{Datelike, Local, NaiveDate};
 use colored::*;
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
 use std::string::String;
 
 use std::env;
@@ -54,7 +53,8 @@ pub fn list_bd() {
         .expect("Couldn't resolve file path")
         .into_os_string();
     let json: String = fs::read_to_string(&path).expect("Couldn't read json file");
-    let res: BirthdayJson = serde_json::from_str(json.as_str()).unwrap();
+    let mut res: BirthdayJson = serde_json::from_str(json.as_str()).unwrap();
+    res.birthdays.sort_by(|x, y| x.name.cmp(&y.name));
     for el in res.birthdays {
         println!("{}, {}", el.name, el.date);
     }
@@ -76,6 +76,40 @@ pub fn today_bd() {
                 date.year() - &el.date[6..].parse().unwrap(),
                 el.date
             );
+        }
+    }
+}
+
+pub fn tmrw_bd() {
+    let path = get_files_path("birthdays.json")
+        .expect("Couldn't resolve file path")
+        .into_os_string();
+    let json: String = fs::read_to_string(&path).expect("Couldn't read json file");
+    let res: BirthdayJson = serde_json::from_str(json.as_str()).unwrap();
+    let date = Local::now().date().succ();
+    for el in res.birthdays {
+        let shortdate = &el.date[0..6];
+        if shortdate == date.format("%d/%m/").to_string() {
+            println!(
+                "Tomorrow is the birthday of {}, they are turning {} ({})",
+                el.name.blue(),
+                date.year() - &el.date[6..].parse().unwrap(),
+                el.date
+            );
+        }
+    }
+}
+
+pub fn query_bd(name: &String) {
+    let path = get_files_path("birthdays.json")
+        .expect("Couldn't resolve file path")
+        .into_os_string();
+    let json: String = fs::read_to_string(&path).expect("Couldn't read json file");
+    let mut res: BirthdayJson = serde_json::from_str(json.as_str()).unwrap();
+    res.birthdays.sort_by(|x, y| x.name.cmp(&y.name));
+    for el in res.birthdays {
+        if el.name.to_lowercase().contains(&name.to_lowercase()) {
+            println!("{}, {}", el.name, el.date);
         }
     }
 }
